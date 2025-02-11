@@ -3,10 +3,14 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System;
+using Unity.VisualScripting;
 
-public class Devices : MonoBehaviour
+public class DeviceSelector : MonoBehaviour
 {
     public TMP_Dropdown deviceDropdown;
+
+    public event Action<string> OnDeviceSelected; // 선택된 장치를 다른 컴포넌트에 전달하는 이벤트
 
     void Start()
     {
@@ -31,6 +35,19 @@ public class Devices : MonoBehaviour
 
         deviceDropdown.ClearOptions();
         deviceDropdown.AddOptions(options);
+
+        deviceDropdown.onValueChanged.AddListener(OnDropdownChanged);
+
+        if(deviceDropdown.options.Count > 0)
+        {
+            OnDropdownChanged(deviceDropdown.value);
+        }
     }
 
+    private void OnDropdownChanged(int value)
+    {
+        string selectedDevice = deviceDropdown.options[value].text;
+        Debug.Log("선택된 장치 : " +  selectedDevice);
+        OnDeviceSelected?.Invoke(selectedDevice);
+    }
 }
