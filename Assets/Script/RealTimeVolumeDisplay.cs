@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class RealTimeVolumeDisplay : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class RealTimeVolumeDisplay : MonoBehaviour
     private const float minDB = -80f;
     private const float maxDB = 0f;
     private const float speakingThreshold = -50f;
+    private WaitForSeconds wait = new WaitForSeconds(0.05f); // 50ms 간격
 
     private void OnAudioFilterRead(float[] data, int channels)
     {
@@ -30,31 +32,38 @@ public class RealTimeVolumeDisplay : MonoBehaviour
         }
     }
 
-
-
-    private void Update()
+    void OnEnable()
     {
-        float rms;
+        StartCoroutine(UpdateVolumeDisplay());
+    }
 
-        lock (lockObj)
+    void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
+    IEnumerator UpdateVolumeDisplay()
+    {
+        while (true)
         {
-            rms = currentRMS;
-        }
+            float rms;
+            lock (lockObj)
+            {
+                rms = currentRMS;
+            }
+            float db = 20f * Mathf.Log10(rms + 1e-5f);
+            float normalizedVolume = Mathf.InverseLerp(minDB, maxDB, db);
 
-        float db = 20f * Mathf.Log10(rms + 1e-5f);
+            if (volumeSlider != null)
+                volumeSlider.value = normalizedVolume;
 
-        float normalizedVolume = Mathf.InverseLerp(minDB, maxDB, db);
-
-        if(volumeSlider != null)
-        {
-            volumeSlider.value = normalizedVolume;
-        }
-
-        if (volumeText != null)
-        {
-            volumeText.text = (db > speakingThreshold)
-                ? $"말하는 중 : {db:F2} dB"
-                : "말이 감지되지 않음";
+            if (volumeText != null)
+            {
+                volumeText.text = (db > speakingThreshold)
+                    ? $"Talking : {db:F2} dB"
+                    : "Words not detected";
+            }
+            yield return wait;
         }
     }
 }

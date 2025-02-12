@@ -7,6 +7,11 @@ using UnityEditor;
 
 public class AudioRecorder : MonoBehaviour
 {
+    public AudioSource analysisSource;  // 녹음 및 실시간 분석용 AudioSource
+    public AudioSource playbackSource;  // 녹음 재생용 AudioSource
+    public AudioMixerGroup mutedGroup;  // 실시간 분석용 그룹 (볼륨이 낮게 설정됨)
+    public AudioMixerGroup normalGroup; // 재생용 그룹 (정상 볼륨)
+
     public AudioClip recordedClip;
     public string microphoneDevice = null; // 사용하려는 마이크 (null == 기본)
     public int recordingDuration = 10; // 녹음 가능한 최대 시간
@@ -16,17 +21,6 @@ public class AudioRecorder : MonoBehaviour
     private bool isRecording = false;
     private AudioSource audioSource;
     private WaitForSeconds recordingDurationSeconds = new WaitForSeconds(10);
-
-    private void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
-        if(audioSource == null )
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-
-        //StartCoroutine(StartRecording());
-    }
 
     public void SetDevice(string deviceName)
     {
@@ -57,15 +51,15 @@ public class AudioRecorder : MonoBehaviour
 
         microphoneDevice = selectedDevice;
 
-        recordedClip = Microphone.Start(selectedDevice, false, recordingDuration, frequency);
+        recordedClip = Microphone.Start(selectedDevice, true, recordingDuration, frequency);
         Debug.Log("녹음 시작");
 
         if (audioSource != null)
         {
-            audioSource.clip = recordedClip;
-            audioSource.loop = true;
-            audioSource.mute = true;
-            audioSource.Play();
+            analysisSource.clip = recordedClip;
+            analysisSource.loop = true;
+            analysisSource.outputAudioMixerGroup = mutedGroup; //audioSource.mute를 해줄 시에 실시간 볼륨미터가 적용되지 않음
+            analysisSource.Play();
         }
 
         StartCoroutine(WaitForRecordingStart());
@@ -99,10 +93,10 @@ public class AudioRecorder : MonoBehaviour
 
         if (recordedClip != null)
         {
-            audioSource.mute = false;
-            audioSource.clip = recordedClip;
-            audioSource.loop = false;
-            audioSource.Play(); // 녹음된 오디오 재생(테스트용)
+            playbackSource.clip = recordedClip;
+            playbackSource.loop = false;
+            playbackSource.outputAudioMixerGroup = normalGroup;
+            playbackSource.Play();
 
             if (recordedClip == null)
             {
