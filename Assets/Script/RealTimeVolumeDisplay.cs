@@ -16,9 +16,17 @@ public class RealTimeVolumeDisplay : MonoBehaviour
     private const float maxDB = 0f;
     private const float speakingThreshold = -50f;
     private WaitForSeconds wait = new WaitForSeconds(0.05f); // 50ms 간격
+    private int debugCallCount = 0;
 
     private void OnAudioFilterRead(float[] data, int channels)
     {
+        debugCallCount++;
+        // 500번마다 로그를 남겨서 호출 여부를 확인
+        if (debugCallCount % 500 == 0)
+        {
+            Debug.Log("OnAudioFilterRead 호출됨: data.Length = " + data.Length);
+        }
+
         float sum = 0f;
         for(int i = 0; i < data.Length; i++)
         {

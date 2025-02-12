@@ -54,7 +54,7 @@ public class AudioRecorder : MonoBehaviour
         recordedClip = Microphone.Start(selectedDevice, true, recordingDuration, frequency);
         Debug.Log("≥Ï¿Ω Ω√¿€");
 
-        if (audioSource != null)
+        if (analysisSource != null)
         {
             analysisSource.clip = recordedClip;
             analysisSource.loop = true;
@@ -90,6 +90,11 @@ public class AudioRecorder : MonoBehaviour
         Microphone.End(microphoneDevice);
         isRecording = false;
         Debug.Log("≥Ï¿Ω ¡ﬂ¥‹");
+
+        if (analysisSource != null && analysisSource.isPlaying)
+        {
+            analysisSource.Stop();
+        }
 
         if (recordedClip != null)
         {
