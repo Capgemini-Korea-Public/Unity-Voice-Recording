@@ -925,6 +925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 525892219}
   - component: {fileID: 525892218}
+  - component: {fileID: 525892220}
   m_Layer: 0
   m_Name: AnalysisSource
   m_TagString: Untagged
@@ -1044,6 +1045,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &525892220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525892217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19273c7b3e016ff4c99edde3260bfd5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 1288768923}
+  volumeText: {fileID: 120599161}
 --- !u!1 &534983177
 GameObject:
   m_ObjectHideFlags: 0
@@ -3413,7 +3428,6 @@ GameObject:
   - component: {fileID: 1873605754}
   - component: {fileID: 1873605757}
   - component: {fileID: 1873605759}
-  - component: {fileID: 1873605758}
   m_Layer: 0
   m_Name: AudioRecorderManager
   m_TagString: Untagged
@@ -3470,20 +3484,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deviceSelector: {fileID: 0}
   audioRecorder: {fileID: 0}
---- !u!114 &1873605758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1873605753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19273c7b3e016ff4c99edde3260bfd5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeSlider: {fileID: 1288768923}
-  volumeText: {fileID: 120599161}
 --- !u!114 &1873605759
 MonoBehaviour:
   m_ObjectHideFlags: 0
