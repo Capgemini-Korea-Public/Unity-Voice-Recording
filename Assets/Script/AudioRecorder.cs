@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System.IO;
 using UnityEngine.Audio;
+using UnityEditor;
 
 public class AudioRecorder : MonoBehaviour
 {
@@ -54,8 +55,19 @@ public class AudioRecorder : MonoBehaviour
             }
         }
 
+        microphoneDevice = selectedDevice;
+
         recordedClip = Microphone.Start(selectedDevice, false, recordingDuration, frequency);
         Debug.Log("녹음 시작");
+
+        if (audioSource != null)
+        {
+            audioSource.clip = recordedClip;
+            audioSource.loop = true;
+            audioSource.mute = true;
+            audioSource.Play();
+        }
+
         StartCoroutine(WaitForRecordingStart());
     }
 
@@ -87,11 +99,32 @@ public class AudioRecorder : MonoBehaviour
 
         if (recordedClip != null)
         {
+            audioSource.mute = false;
             audioSource.clip = recordedClip;
+            audioSource.loop = false;
             audioSource.Play(); // 녹음된 오디오 재생(테스트용)
 
-            string filePath = Path.Combine(Application.persistentDataPath, recordedClip.name);
+            if (recordedClip == null)
+            {
+                Debug.LogError("녹음된 클립이 없습니다.");
+                return;
+            }
+
+            // 에디터 환경에서는 "Assets/Sounds" 폴더에 저장, 빌드 환경에서는 persistentDataPath 사용
+#if UNITY_EDITOR
+            string folderPath = "Assets/Sounds";
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            string filePath = Path.Combine(folderPath, recordedClip.name + ".wav");
             WavUtility.SaveWavFile(recordedClip, filePath);
+            AssetDatabase.Refresh(); // 에셋 데이터베이스 갱신해서 Project 창에 반영
+#else
+        string filePath = Path.Combine(Application.persistentDataPath, recordedClip.name + ".wav");
+        WavUtility.SaveWavFile(recordedClip, filePath);
+#endif
+
+            Debug.Log("파일 저장 완료: " + filePath);
         }
     }
 }
