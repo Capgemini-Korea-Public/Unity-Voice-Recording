@@ -54,7 +54,7 @@ public class AudioRecorder : MonoBehaviour
         recordedClip = Microphone.Start(selectedDevice, true, recordingDuration, frequency);
         Debug.Log("녹음 시작");
 
-        if (audioSource != null)
+        if (analysisSource != null)
         {
             analysisSource.clip = recordedClip;
             analysisSource.loop = true;
@@ -91,6 +91,11 @@ public class AudioRecorder : MonoBehaviour
         isRecording = false;
         Debug.Log("녹음 중단");
 
+        if (analysisSource != null && analysisSource.isPlaying)
+        {
+            analysisSource.Stop();
+        }
+
         if (recordedClip != null)
         {
             playbackSource.clip = recordedClip;
@@ -104,21 +109,37 @@ public class AudioRecorder : MonoBehaviour
                 return;
             }
 
-            // 에디터 환경에서는 "Assets/Sounds" 폴더에 저장, 빌드 환경에서는 persistentDataPath 사용
+            // 녹음 중인 deviceName을 사용해 실제 녹음된 샘플 위치를 가져옵니다.
+            int lastSample = Microphone.GetPosition(selectedDevice);
+            if (lastSample <= 0)
+            {
+                Debug.LogError("실제 녹음된 샘플이 없습니다.");
+                return;
+            }
+
+            // 녹음된 클립의 채널 수와 frequency를 가져옵니다.
+            int channels = recordedClip.channels;
+            int frequency = recordedClip.frequency;
+
+            // 실제 녹음된 데이터만큼의 샘플 배열을 만듭니다.
+            float[] samples = new float[lastSample * channels];
+            recordedClip.GetData(samples, 0);
+
+            // 실제 녹음된 부분만 담은 새로운 AudioClip 생성
+            AudioClip trimmedClip = AudioClip.Create(recordedClip.name + "_trimmed", lastSample, channels, frequency, false);
+            trimmedClip.SetData(samples, 0);
+
+            // 이후 trimmedClip을 WAV 파일로 저장하면 실제 녹음된 길이만큼의 파일이 생성됩니다.
 #if UNITY_EDITOR
             string folderPath = "Assets/Sounds";
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
+            string filePath = Path.Combine(folderPath, trimmedClip.name + ".wav");
+            WavUtility.SaveWavFile(trimmedClip, filePath);
+            AssetDatabase.Refresh();
 
-            string filePath = Path.Combine(folderPath, recordedClip.name + ".wav");
-            WavUtility.SaveWavFile(recordedClip, filePath);
-            AssetDatabase.Refresh(); // 에셋 데이터베이스 갱신해서 Project 창에 반영
-#else
-        string filePath = Path.Combine(Application.persistentDataPath, recordedClip.name + ".wav");
-        WavUtility.SaveWavFile(recordedClip, filePath);
+            Debug.Log("실제 녹음된 길이만큼 저장 완료: " + filePath);
 #endif
-
-            Debug.Log("파일 저장 완료: " + filePath);
         }
     }
 }
