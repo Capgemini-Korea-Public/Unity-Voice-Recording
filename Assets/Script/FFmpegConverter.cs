@@ -12,7 +12,7 @@ public static class FFmpegConverter
     /// <param name="wavFilePath">변환할 원본 WAV 파일의 전체 경로</param>
     /// <param name="oggFilePath">저장할 OGG 파일의 전체 경로</param>
     /// <param name="ffmpegPath">FFmpeg 실행 파일 경로 (PATH에 있다면 "ffmpeg"만 입력)</param>
-    public static void ConvertWavToOgg(string wavFilePath, string oggFilePath, string ffmpegPath = "ffmpeg")
+    public static void ConvertWavToOgg(string wavFilePath, string oggFilePath, string ffmpegPath)
     {
         if (!File.Exists(wavFilePath))
         {

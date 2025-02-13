@@ -138,6 +138,13 @@ public class AudioRecorder : MonoBehaviour
             WavUtility.SaveWavFile(trimmedClip, filePath);
             AssetDatabase.Refresh();
 
+            // ffmpeg.exe의 절대 경로 생성 (Assets/Plugin/ffmpeg/bin/ffmpeg.exe)
+            string ffmpegPath = Path.Combine(Application.dataPath, "Plugin", "ffmpeg", "bin", "ffmpeg.exe");
+
+            // FFmpeg를 사용해 WAV를 OGG로 변환
+            string oggFilePath = Path.Combine(Application.persistentDataPath, recordedClip.name + ".ogg");
+            FFmpegConverter.ConvertWavToOgg(folderPath, oggFilePath, ffmpegPath);
+
             Debug.Log("실제 녹음된 길이만큼 저장 완료: " + filePath);
 #endif
         }
