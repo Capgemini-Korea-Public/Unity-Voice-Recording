@@ -16,4 +16,6 @@ public class AudioManager : MonoBehaviour
     public void StartRecording() => audioRecorder.StartRecording();
 
     public void StopRecording() => audioRecorder.StopRecording();
+
+    public void PlayRecording() => audioRecorder.PlayRecording();
 }

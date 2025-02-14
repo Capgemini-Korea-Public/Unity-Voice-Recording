@@ -151,5 +151,22 @@ public class AudioRecorder : MonoBehaviour
 #endif
         }
     }
+
+    public void PlayRecording()
+    {
+        if (recordedClip == null)
+        {
+            Debug.LogWarning("재생할 녹음된 클립이 없습니다.");
+            return;
+        }
+
+        // 재생용 AudioSource에 녹음된 클립을 할당하고 재생합니다.
+        playbackSource.clip = recordedClip;
+        playbackSource.loop = false;
+        playbackSource.outputAudioMixerGroup = normalGroup;
+        playbackSource.Play();
+
+        Debug.Log("녹음 재생 시작");
+    }
 }
 
