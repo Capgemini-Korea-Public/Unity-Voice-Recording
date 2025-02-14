@@ -15,6 +15,7 @@ public class DeviceSelector : MonoBehaviour
 
     private List<string> cachedDevices = new List<string>();
     private WaitForSeconds deviceCheckDelay = new WaitForSeconds(1f);
+    private string selectedDeviceName = null;
 
     void Start()
     {
@@ -30,6 +31,7 @@ public class DeviceSelector : MonoBehaviour
             Debug.LogWarning("사용 가능한 마이크 디바이스가 없습니다.");
             deviceDropdown.ClearOptions();
             cachedDevices = new List<string>();
+            selectedDeviceName = null;
             return;
         }
 
@@ -46,17 +48,34 @@ public class DeviceSelector : MonoBehaviour
         deviceDropdown.AddOptions(options);
         deviceDropdown.onValueChanged.AddListener(OnDropdownChanged);
 
-        if (deviceDropdown.options.Count > 0)
+        int index = options.IndexOf(selectedDeviceName);
+        if (index >= 0)
         {
-            OnDropdownChanged(deviceDropdown.value);
+            // 이전 선택 유지
+            deviceDropdown.value = index;
+            Debug.Log("이전 선택된 장치 유지: " + selectedDeviceName);
         }
+        else
+        {
+            // 이전 선택한 디바이스가 더 이상 존재하지 않는 경우
+            if (!string.IsNullOrEmpty(selectedDeviceName))
+            {
+                Debug.LogWarning("선택된 장치 '" + selectedDeviceName + "' 가 더 이상 사용 불가능 합니다.");
+            }
+            // 기본값으로 첫 번째 항목 선택
+            deviceDropdown.value = 0;
+            selectedDeviceName = options[0];
+        }
+
+        deviceDropdown.onValueChanged.AddListener(OnDropdownChanged);
+        OnDropdownChanged(deviceDropdown.value);
     }
 
     private void OnDropdownChanged(int value)
     {
-        string selectedDevice = deviceDropdown.options[value].text;
-        Debug.Log("선택된 장치 : " +  selectedDevice);
-        OnDeviceSelected?.Invoke(selectedDevice);
+        selectedDeviceName = deviceDropdown.options[value].text;
+        Debug.Log("선택된 장치: " + selectedDeviceName);
+        OnDeviceSelected?.Invoke(selectedDeviceName);
     }
 
     IEnumerator MonitorDeviceChanges()

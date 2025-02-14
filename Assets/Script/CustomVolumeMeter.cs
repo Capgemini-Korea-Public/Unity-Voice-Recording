@@ -76,9 +76,10 @@ public class CustomVolumeMeter : MonoBehaviour
                     sum += sample * sample;
                 }
                 float rms = Mathf.Sqrt(sum / samples.Length);
-                float dB = 20f * Mathf.Log(rms + 1e-6f);
+                float dB = 20f * Mathf.Log10(rms + 1e-6f);
 
-                if(volumeSlider  != null)
+
+                if (volumeSlider  != null)
                 {
                     float normalizedVolume = Mathf.InverseLerp(-80f, 0f, dB);
                     volumeSlider.value = normalizedVolume;

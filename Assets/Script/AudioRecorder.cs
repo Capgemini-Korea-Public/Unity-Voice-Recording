@@ -58,6 +58,7 @@ public class AudioRecorder : MonoBehaviour
         {
             analysisSource.clip = recordedClip;
             analysisSource.loop = true;
+            analysisSource.mute = true;
             analysisSource.outputAudioMixerGroup = mutedGroup; //audioSource.mute를 해줄 시에 실시간 볼륨미터가 적용되지 않음
             analysisSource.Play();
         }
