@@ -51,7 +51,7 @@ public class AudioRecorder : MonoBehaviour
 
         microphoneDevice = selectedDevice;
 
-        recordedClip = Microphone.Start(selectedDevice, true, recordingDuration, frequency);
+        recordedClip = Microphone.Start(microphoneDevice, true, recordingDuration, frequency);
         Debug.Log("녹음 시작");
 
         if (analysisSource != null)
@@ -86,7 +86,8 @@ public class AudioRecorder : MonoBehaviour
             Debug.Log("현재 녹음 중이 아님");
             return;
         }
-            
+
+        int lastSample = Microphone.GetPosition(microphoneDevice);
         Microphone.End(microphoneDevice);
         isRecording = false;
         Debug.Log("녹음 중단");
@@ -110,7 +111,7 @@ public class AudioRecorder : MonoBehaviour
             }
 
             // 녹음 중인 deviceName을 사용해 실제 녹음된 샘플 위치를 가져옵니다.
-            int lastSample = Microphone.GetPosition(selectedDevice);
+            
             if (lastSample <= 0)
             {
                 Debug.LogError("실제 녹음된 샘플이 없습니다.");
@@ -131,21 +132,21 @@ public class AudioRecorder : MonoBehaviour
 
             // 이후 trimmedClip을 WAV 파일로 저장하면 실제 녹음된 길이만큼의 파일이 생성됩니다.
 #if UNITY_EDITOR
-            string folderPath = "Assets/Sounds";
+            string folderPath = Path.Combine(Application.dataPath, "Sounds");
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
-            string filePath = Path.Combine(folderPath, trimmedClip.name + ".wav");
-            WavUtility.SaveWavFile(trimmedClip, filePath);
+            string wavFilePath = Path.Combine(folderPath, trimmedClip.name + ".wav");
+            WavUtility.SaveWavFile(trimmedClip, wavFilePath);
             AssetDatabase.Refresh();
 
             // ffmpeg.exe의 절대 경로 생성 (Assets/Plugin/ffmpeg/bin/ffmpeg.exe)
-            string ffmpegPath = Path.Combine(Application.dataPath, "Plugin", "ffmpeg", "bin", "ffmpeg.exe");
+            string ffmpegPath = Path.Combine(Application.dataPath, "Plugins", "FFmpeg", "bin", "ffmpeg.exe");
 
             // FFmpeg를 사용해 WAV를 OGG로 변환
-            string oggFilePath = Path.Combine(Application.persistentDataPath, recordedClip.name + ".ogg");
-            FFmpegConverter.ConvertWavToOgg(folderPath, oggFilePath, ffmpegPath);
+            string oggFilePath = Path.Combine(folderPath, trimmedClip.name + ".ogg");
+            FFmpegConverter.ConvertWavToOgg(wavFilePath, oggFilePath, ffmpegPath);
 
-            Debug.Log("실제 녹음된 길이만큼 저장 완료: " + filePath);
+            Debug.Log("실제 녹음된 길이만큼 저장 완료: " + wavFilePath);
 #endif
         }
     }
