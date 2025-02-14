@@ -152,6 +152,23 @@ public class AudioRecorder : MonoBehaviour
         }
     }
 
+    // 오디오 클립을 바로 STT에 보내는 메서드
+    public void ProcessRecordingForSTT()
+    {
+        if (recordedClip == null)
+        {
+            Debug.LogWarning("녹음된 클립이 없습니다.");
+            return;
+        }
+
+        int sampleCount = recordedClip.samples * recordedClip.channels;
+        float[] samples = new float[sampleCount];
+        recordedClip.GetData(samples, 0);
+
+        //Tensor<float> audioTensor = new Tensor<float>(new TensorShape(1, sampleCount), samples);
+        //STTModule.ProcessAudio(audioTensor);
+    }
+
     public void PlayRecording()
     {
         if (recordedClip == null)
