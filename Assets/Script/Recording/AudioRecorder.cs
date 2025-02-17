@@ -9,9 +9,6 @@ public class AudioRecorder : MonoBehaviour
 {
     public AudioSource analysisSource;  // 녹음 및 실시간 분석용 AudioSource
     public AudioSource playbackSource;  // 녹음 재생용 AudioSource
-    public AudioMixerGroup mutedGroup;  // 실시간 분석용 그룹 (볼륨이 낮게 설정됨)
-    public AudioMixerGroup normalGroup; // 재생용 그룹 (정상 볼륨)
-
     public AudioClip recordedClip;
     public string microphoneDevice = null; // 사용하려는 마이크 (null == 기본)
     public int recordingDuration = 10; // 녹음 가능한 최대 시간
@@ -19,8 +16,10 @@ public class AudioRecorder : MonoBehaviour
 
     private string selectedDevice;
     private bool isRecording = false;
-    private AudioSource audioSource;
     private WaitForSeconds recordingDurationSeconds = new WaitForSeconds(10);
+
+    public AudioFileManager fileManager;
+    public AudioProcessingManager processingManager;
 
     public void SetDevice(string deviceName)
     {
@@ -59,7 +58,6 @@ public class AudioRecorder : MonoBehaviour
             analysisSource.clip = recordedClip;
             analysisSource.loop = true;
             analysisSource.mute = true;
-            analysisSource.outputAudioMixerGroup = mutedGroup; //audioSource.mute를 해줄 시에 실시간 볼륨미터가 적용되지 않음
             analysisSource.Play();
         }
 
@@ -82,7 +80,7 @@ public class AudioRecorder : MonoBehaviour
 
     public void StopRecording()
     {
-        if(!isRecording)
+        if (!isRecording)
         {
             Debug.Log("현재 녹음 중이 아님");
             return;
@@ -102,53 +100,24 @@ public class AudioRecorder : MonoBehaviour
         {
             playbackSource.clip = recordedClip;
             playbackSource.loop = false;
-            playbackSource.outputAudioMixerGroup = normalGroup;
             playbackSource.Play();
+        }
 
-            if (recordedClip == null)
+        if (processingManager != null)
+        {
+            SaveMode mode = processingManager.SelectedSaveMode;
+            switch (mode)
             {
-                Debug.LogError("녹음된 클립이 없습니다.");
-                return;
+                case SaveMode.SaveWav:
+                    fileManager.SaveAsWav(recordedClip, lastSample);
+                    break;
+                case SaveMode.SaveOgg:
+                    fileManager.SaveAsOgg(recordedClip, lastSample);
+                    break;
+                case SaveMode.None:
+                    Debug.Log("저장 옵션: 저장 안 함");
+                    break;
             }
-
-            // 녹음 중인 deviceName을 사용해 실제 녹음된 샘플 위치를 가져옵니다.
-            
-            if (lastSample <= 0)
-            {
-                Debug.LogError("실제 녹음된 샘플이 없습니다.");
-                return;
-            }
-
-            // 녹음된 클립의 채널 수와 frequency를 가져옵니다.
-            int channels = recordedClip.channels;
-            int frequency = recordedClip.frequency;
-
-            // 실제 녹음된 데이터만큼의 샘플 배열을 만듭니다.
-            float[] samples = new float[lastSample * channels];
-            recordedClip.GetData(samples, 0);
-
-            // 실제 녹음된 부분만 담은 새로운 AudioClip 생성
-            AudioClip trimmedClip = AudioClip.Create(recordedClip.name + "_trimmed", lastSample, channels, frequency, false);
-            trimmedClip.SetData(samples, 0);
-
-            // 이후 trimmedClip을 WAV 파일로 저장하면 실제 녹음된 길이만큼의 파일이 생성됩니다.
-#if UNITY_EDITOR
-            string folderPath = Path.Combine(Application.dataPath, "Sounds");
-            if (!Directory.Exists(folderPath))
-                Directory.CreateDirectory(folderPath);
-            string wavFilePath = Path.Combine(folderPath, trimmedClip.name + ".wav");
-            WavUtility.SaveWavFile(trimmedClip, wavFilePath);
-            AssetDatabase.Refresh();
-
-            // ffmpeg.exe의 절대 경로 생성 (Assets/Plugin/ffmpeg/bin/ffmpeg.exe)
-            string ffmpegPath = Path.Combine(Application.dataPath, "Plugins", "FFmpeg", "bin", "ffmpeg.exe");
-
-            // FFmpeg를 사용해 WAV를 OGG로 변환
-            string oggFilePath = Path.Combine(folderPath, trimmedClip.name + ".ogg");
-            FFmpegConverter.ConvertWavToOgg(wavFilePath, oggFilePath, ffmpegPath);
-
-            Debug.Log("실제 녹음된 길이만큼 저장 완료: " + wavFilePath);
-#endif
         }
     }
 
@@ -180,7 +149,6 @@ public class AudioRecorder : MonoBehaviour
         // 재생용 AudioSource에 녹음된 클립을 할당하고 재생합니다.
         playbackSource.clip = recordedClip;
         playbackSource.loop = false;
-        playbackSource.outputAudioMixerGroup = normalGroup;
         playbackSource.Play();
 
         Debug.Log("녹음 재생 시작");
