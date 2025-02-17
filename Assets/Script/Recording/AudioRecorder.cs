@@ -13,6 +13,7 @@ public class AudioRecorder : MonoBehaviour
     public string microphoneDevice = null; // 사용하려는 마이크 (null == 기본)
     public int recordingDuration = 10; // 녹음 가능한 최대 시간
     public int frequency = 44100; // 샘플 레이트
+    public string sttUrl;
 
     private string selectedDevice;
     private bool isRecording = false;
@@ -20,6 +21,7 @@ public class AudioRecorder : MonoBehaviour
 
     public AudioFileManager fileManager;
     public AudioProcessingManager processingManager;
+    public STTuploader sttuploader;
 
     public void SetDevice(string deviceName)
     {
@@ -136,6 +138,13 @@ public class AudioRecorder : MonoBehaviour
 
         //Tensor<float> audioTensor = new Tensor<float>(new TensorShape(1, sampleCount), samples);
         //STTModule.ProcessAudio(audioTensor);
+    }
+
+    IEnumerator UploadAudioClipToSTT()
+    {
+        byte[] wavBytes = WavByteUtility.ConvertAudioClipToWavBytes(recordedClip);
+
+        yield return StartCoroutine(sttuploader.UploadWavBytes(wavBytes, sttUrl));
     }
 
     public void PlayRecording()

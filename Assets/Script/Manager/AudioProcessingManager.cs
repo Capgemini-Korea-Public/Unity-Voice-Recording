@@ -20,7 +20,7 @@ public class AudioProcessingManager : MonoBehaviour
 
     private void Start()
     {
-        List<string> options = new List<string> { "WAV로 저장", "OGG로 저장", "저장 안 함" };
+        List<string> options = new List<string> { "Save To Wav", "Save To Ogg", "None" };
         saveModeDropdown.ClearOptions();
         saveModeDropdown.AddOptions(options);
         saveModeDropdown.onValueChanged.AddListener(OnSaveModeChanged);
