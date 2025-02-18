@@ -44,6 +44,6 @@ public class AudioProcessingManager : MonoBehaviour
                 SelectedSaveMode = SaveMode.None;
                 break;
         }
-        Debug.Log("急琶等 历厘 可记: " + SelectedSaveMode);
+        Debug.Log("Selected Save Mode : " + SelectedSaveMode);
     }
 }

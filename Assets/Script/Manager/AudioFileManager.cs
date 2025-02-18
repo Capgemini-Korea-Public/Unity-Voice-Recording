@@ -4,11 +4,12 @@ using UnityEngine;
 public class AudioFileManager : MonoBehaviour
 {
     [Header("File Path")]
-    public string wavFolderPath = Path.Combine(Application.dataPath, "Sounds");
+    public string wavFolderPath;
     public string ffmpegPath = Path.Combine(Application.dataPath, "Plugin", "FFmpeg", "bin", "ffmpeg.exe");
 
     void Awake()
     {
+        wavFolderPath = Path.Combine(Application.persistentDataPath);
         // 폴더가 존재하지 않으면 생성합니다.
         if (!Directory.Exists(wavFolderPath))
             Directory.CreateDirectory(wavFolderPath);
@@ -31,7 +32,7 @@ public class AudioFileManager : MonoBehaviour
 
         string wavFilePath = Path.Combine(wavFolderPath, clip.name + ".wav");
         WavUtility.SaveWavFile(clip, wavFilePath);
-        Debug.Log("WAV 파일 저장 완료: " + wavFilePath);
+        Debug.Log("WAV file save success: " + wavFilePath);
     }
 
     public void SaveAsOgg(AudioClip clip, int lastSample)
@@ -40,7 +41,7 @@ public class AudioFileManager : MonoBehaviour
 
         string wavFilePath = Path.Combine(wavFolderPath, clip.name + ".wav");
         WavUtility.SaveWavFile(clip, wavFilePath);
-        Debug.Log("WAV 파일 저장 완료: " + wavFilePath);
+        Debug.Log("WAV file save success: " + wavFilePath);
 
         // OGG 파일은 persistentDataPath를 사용하는 예시
         string oggFilePath = Path.Combine(Application.persistentDataPath, clip.name + ".ogg");

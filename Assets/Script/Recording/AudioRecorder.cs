@@ -4,24 +4,43 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.Audio;
 using UnityEditor;
+using TMPro;
+using UnityEngine.UI;
 
 public class AudioRecorder : MonoBehaviour
 {
     public AudioSource analysisSource;  // 녹음 및 실시간 분석용 AudioSource
     public AudioSource playbackSource;  // 녹음 재생용 AudioSource
     public AudioClip recordedClip;
+    public TMP_InputField durationInputField;
     public string microphoneDevice = null; // 사용하려는 마이크 (null == 기본)
-    public int recordingDuration = 10; // 녹음 가능한 최대 시간
-    public int frequency = 44100; // 샘플 레이트
     public string sttUrl;
+    public TextMeshProUGUI maxRecordingDurationTxt;
+    public int recordingDuration = 10; // 녹음 가능한 최대 시
+    public int frequency = 44100; // 샘플 레이트
+    public bool isRecording = false;
+    public Button StopBtn;
 
     private string selectedDevice;
-    private bool isRecording = false;
-    private WaitForSeconds recordingDurationSeconds = new WaitForSeconds(10);
 
     public AudioFileManager fileManager;
     public AudioProcessingManager processingManager;
     public STTuploader sttuploader;
+
+    void Start()
+    {
+        durationInputField.onValueChanged.AddListener(OnDurationChanged);
+    }
+
+    void OnDurationChanged(string value)
+    {
+        if (int.TryParse(value, out int result))
+        {
+            recordingDuration = Mathf.Clamp(result, 1, 30);
+            maxRecordingDurationTxt.text = "Max Recording Duration : " + value;
+            Debug.Log($"Recording duration set to {recordingDuration} seconds");
+        }
+    }
 
     public void SetDevice(string deviceName)
     {
@@ -32,7 +51,7 @@ public class AudioRecorder : MonoBehaviour
     {
         if(isRecording)
         {
-            Debug.Log("이미 녹음 중입니다.");
+            Debug.Log("Recording is already in progress.");
             return;
         }
 
@@ -41,19 +60,15 @@ public class AudioRecorder : MonoBehaviour
             if (Microphone.devices.Length > 0)
             {
                 selectedDevice = Microphone.devices[0];
-                Debug.Log("기본 마이크 장치로 자동 선택됨: " + selectedDevice);
-            }
-            else
-            {
-                Debug.LogWarning("사용 가능한 마이크가 없습니다.");
-                return;
+                Debug.Log("Automatically selected default microphone device: " + selectedDevice);
             }
         }
 
+        StopBtn.interactable = true;
         microphoneDevice = selectedDevice;
 
         recordedClip = Microphone.Start(microphoneDevice, true, recordingDuration, frequency);
-        Debug.Log("녹음 시작");
+        Debug.Log("Recording started.");
 
         if (analysisSource != null)
         {
@@ -75,7 +90,7 @@ public class AudioRecorder : MonoBehaviour
 
         isRecording = true;
 
-        yield return recordingDurationSeconds; // 10초 뒤 자동 종료
+        yield return new WaitForSeconds(recordingDuration);
 
         StopRecording();
     }
@@ -84,14 +99,15 @@ public class AudioRecorder : MonoBehaviour
     {
         if (!isRecording)
         {
-            Debug.Log("현재 녹음 중이 아님");
+            Debug.Log("Not currently recording.");
             return;
         }
 
         int lastSample = Microphone.GetPosition(microphoneDevice);
         Microphone.End(microphoneDevice);
         isRecording = false;
-        Debug.Log("녹음 중단");
+        StopBtn.interactable = false;
+        Debug.Log("Recording stopped.");
 
         if (analysisSource != null && analysisSource.isPlaying)
         {
@@ -117,7 +133,7 @@ public class AudioRecorder : MonoBehaviour
                     fileManager.SaveAsOgg(recordedClip, lastSample);
                     break;
                 case SaveMode.None:
-                    Debug.Log("저장 옵션: 저장 안 함");
+                    Debug.Log("Save mode : None");
                     break;
             }
         }
@@ -128,7 +144,7 @@ public class AudioRecorder : MonoBehaviour
     {
         if (recordedClip == null)
         {
-            Debug.LogWarning("녹음된 클립이 없습니다.");
+            Debug.LogWarning("No recorded clip available.");
             return;
         }
 
@@ -151,7 +167,7 @@ public class AudioRecorder : MonoBehaviour
     {
         if (recordedClip == null)
         {
-            Debug.LogWarning("재생할 녹음된 클립이 없습니다.");
+            Debug.LogWarning("No recorded clip available for playback.");
             return;
         }
 
@@ -160,7 +176,7 @@ public class AudioRecorder : MonoBehaviour
         playbackSource.loop = false;
         playbackSource.Play();
 
-        Debug.Log("녹음 재생 시작");
+        Debug.Log("Playback started.");
     }
 }
 

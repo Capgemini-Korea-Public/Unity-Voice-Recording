@@ -19,12 +19,12 @@ public static class FFmpegConverter
     {
         if (!File.Exists(wavFilePath))
         {
-            Debug.LogError("WAV 파일이 존재하지 않습니다: " + wavFilePath);
+            Debug.LogError("WAV file does not exist: " + wavFilePath);
             return;
         }
         if (!File.Exists(ffmpegPath))
         {
-            Debug.LogError("FFmpeg 실행 파일이 존재하지 않습니다: " + ffmpegPath);
+            Debug.LogError("FFmpeg executable does not exist: " + ffmpegPath);
         }
 
         // FFmpeg 명령어: -y (자동 덮어쓰기), -i "input.wav" "output.ogg"
@@ -50,23 +50,23 @@ public static class FFmpegConverter
 
                 process.WaitForExit();
 
-                Debug.Log("FFmpeg 출력: " + output);
+                Debug.Log("FFmpeg output: " + output);
                 if (!string.IsNullOrEmpty(error))
-                    Debug.LogWarning("FFmpeg 에러: " + error);
+                    Debug.LogWarning("FFmpeg error: " + error);
 
                 if (process.ExitCode == 0)
                 {
-                    Debug.Log("변환 완료: " + oggFilePath);
+                    Debug.Log("Conversion successful: " + oggFilePath);
                 }
                 else
                 {
-                    Debug.LogError("FFmpeg 변환 실패. 종료 코드: " + process.ExitCode);
+                    Debug.LogError("FFmpeg conversion failed. Exit code: " + process.ExitCode);
                 }
             }
         }
         catch (System.Exception ex)
         {
-            Debug.LogError("FFmpeg 실행 중 예외 발생: " + ex.Message);
+            Debug.LogError("Exception during FFmpeg execution: " + ex.Message);
         }
     }
 }

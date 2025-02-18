@@ -8,7 +8,7 @@ public static class WavUtility
     {
         if (clip == null)
         {
-            Debug.LogWarning("AudioClip이 null입니다");
+            Debug.LogWarning("AudioClip is null");
             return;
         }
 
@@ -21,7 +21,7 @@ public static class WavUtility
 
         // 파일로 저장
         File.WriteAllBytes(filePath, wavData);
-        Debug.Log("WAV 파일이 저장되었습니다: " + filePath);
+        Debug.Log("WAV file is Saved : " + filePath);
     }
 
     public static byte[] ConvertToWav(float[] samples, int channels, int frequency)

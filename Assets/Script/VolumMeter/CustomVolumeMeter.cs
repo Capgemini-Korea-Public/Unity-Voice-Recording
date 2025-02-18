@@ -22,7 +22,7 @@ public class CustomVolumeMeter : MonoBehaviour
     {
         if(recordingSource == null)
         {
-            Debug.LogError("녹음용 AudioSource가 할당되지 않았습니다.");
+            Debug.LogError("Recording AudioSource is not assigned.");
             return;
         }
 

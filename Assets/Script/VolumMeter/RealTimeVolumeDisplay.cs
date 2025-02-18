@@ -5,7 +5,7 @@ using System.Collections;
 
 public class RealTimeVolumeDisplay : MonoBehaviour
 {
-    [Header("UI 요소")]
+    [Header("UI Elements")]
     public Slider volumeSlider;
     public TextMeshProUGUI volumeText;
 
@@ -24,7 +24,7 @@ public class RealTimeVolumeDisplay : MonoBehaviour
         // 500번마다 로그를 남겨서 호출 여부를 확인
         if (debugCallCount % 500 == 0)
         {
-            Debug.Log("OnAudioFilterRead 호출됨: data.Length = " + data.Length);
+            Debug.Log("OnAudioFilterRead called: data.Length = " + data.Length);
         }
 
         float sum = 0f;
