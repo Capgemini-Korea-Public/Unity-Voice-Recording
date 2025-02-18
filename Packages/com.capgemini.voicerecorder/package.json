@@ -10,6 +10,13 @@
     "voice",
     "stt"
   ],
+  "samples": [
+    {
+      "displayName": "Basic Example",
+      "description": "A basic demonstration scene for voice recording.",
+      "path": "Samples~/BasicExample"
+    }
+  ],
   "author": {
     "name": "Your Name or Team",
     "email": "team@company.com",
