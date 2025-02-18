@@ -1,0 +1,20 @@
+{
+  "name": "com.companyname.voicerecording",
+  "displayName": "Voice Recording Module",
+  "version": "1.0.0",
+  "unity": "2021.3",
+  "description": "Module providing voice recording, noise reduction, and STT integration.",
+  "keywords": [
+    "audio",
+    "recording",
+    "voice",
+    "stt"
+  ],
+  "author": {
+    "name": "Your Name or Team",
+    "email": "team@company.com",
+    "url": "https://company.com"
+  },
+  "dependencies": {
+  }
+}
