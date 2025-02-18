@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.companyname.voicerecording": {
+    "com.capgemini.voicerecording": {
       "version": "file:com.capgemini.voicerecorder",
       "depth": 0,
       "source": "embedded",
