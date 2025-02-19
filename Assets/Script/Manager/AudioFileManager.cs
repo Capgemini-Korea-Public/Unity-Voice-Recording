@@ -5,7 +5,8 @@ public class AudioFileManager : MonoBehaviour
 {
     [Header("File Path")]
     public string wavFolderPath;
-    public string ffmpegPath = Path.Combine(Application.dataPath, "Plugin", "FFmpeg", "bin", "ffmpeg.exe");
+    public string ffmpegRelativePath = "Plugin/FFmpeg/bin/ffmpeg.exe";
+    public string ffmpegPath;
 
     void Awake()
     {
@@ -13,9 +14,11 @@ public class AudioFileManager : MonoBehaviour
         // 폴더가 존재하지 않으면 생성합니다.
         if (!Directory.Exists(wavFolderPath))
             Directory.CreateDirectory(wavFolderPath);
+
+        ffmpegPath = Path.Combine(Application.dataPath, ffmpegRelativePath);   
     }
 
-    // WAV와 OGG 저장 기능을 담당
+// WAV와 OGG 저장 기능을 담당
     public void SaveAsWav(AudioClip clip, int lastSample)
     {
         // 녹음된 클립의 채널 수와 frequency를 가져옵니다.
