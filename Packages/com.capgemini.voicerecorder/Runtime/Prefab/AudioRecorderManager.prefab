@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7398567355233288011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4133577724536274936}
+  - component: {fileID: 3724616512725028518}
+  - component: {fileID: 6291722363007621450}
+  - component: {fileID: 5189430065918626366}
+  - component: {fileID: 2543581237677074818}
+  - component: {fileID: 3244548010433528477}
+  - component: {fileID: 7309670651190727855}
+  m_Layer: 0
+  m_Name: AudioRecorderManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4133577724536274936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398567355233288011}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 253.22916, y: 253.22916, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3724616512725028518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398567355233288011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a264b98cadc29469a73dbb0efafb7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  analysisSource: {fileID: 0}
+  playbackSource: {fileID: 0}
+  recordedClip: {fileID: 0}
+  durationInputField: {fileID: 0}
+  microphoneDevice: 
+  sttUrl: 
+  maxRecordingDurationTxt: {fileID: 0}
+  recordingDuration: 10
+  frequency: 44100
+  isRecording: 0
+  StopBtn: {fileID: 0}
+  fileManager: {fileID: 0}
+  processingManager: {fileID: 0}
+  sttuploader: {fileID: 0}
+--- !u!114 &6291722363007621450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398567355233288011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30cd00499eb62c9418cc233c37ff87e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deviceSelector: {fileID: 0}
+  audioRecorder: {fileID: 0}
+--- !u!114 &5189430065918626366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398567355233288011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71e5eea073ccb3848a10faa3293d3c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deviceDropdown: {fileID: 0}
+  deviceError: {fileID: 0}
+  recordButton: {fileID: 0}
+  stopButton: {fileID: 0}
+--- !u!114 &2543581237677074818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398567355233288011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b77f5740b8e3f824192cbf8b027b13b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioRecorder: {fileID: 3724616512725028518}
+  audioFileManager: {fileID: 3244548010433528477}
+  saveModeDropdown: {fileID: 0}
+--- !u!114 &3244548010433528477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398567355233288011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7699bbd6c9bc1e43be2de799082dbe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wavFolderPath: "C:/Users/\uC724\uD61C\uB9B0/Documents/GitHub/Unity-Voice-Recording/Assets\\Sounds"
+  ffmpegPath: "C:/Users/\uC724\uD61C\uB9B0/Documents/GitHub/Unity-Voice-Recording/Assets\\Plugin\\FFmpeg\\bin\\ffmpeg.exe"
+--- !u!114 &7309670651190727855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398567355233288011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b469327a6a680a42a4b258f6864f1be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

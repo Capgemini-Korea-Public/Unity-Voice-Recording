@@ -1,1 +1,5 @@
-// JavaScript source code
+{
+  "displayName": "Basic Example",
+  "description": "A basic demonstration scene for voice recording.",
+  "path": "Samples~/BasicExample"
+}
