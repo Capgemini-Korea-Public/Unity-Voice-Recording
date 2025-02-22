@@ -7,6 +7,8 @@
 
 !Samples~/
 !Samples~/**
+!Samples~/BasicExample/
+!Samples~/BasicExample/**
 
 !*.meta
 !*.asmdef
