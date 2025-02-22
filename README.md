@@ -33,7 +33,8 @@ With this module, you can easily implement voice recording and speech recognitio
 
 1. Open the **Package Manager** in Unity.
 2. Click the **"+"** button in the top left and select **"Install Package from Git URL"**.
-3. Enter the following URL: https://github.com/Capgemini-Korea-Public/Unity-Voice-Recording.git?path=/Packages/com.capgemini.voicerecording#main
+3. Enter the following URL: https://github.com/Capgemini-Korea-Public/Unity-Voice-Recording.git?path=Packages/com.capgemini.voicerecorder#main
+)
 4. If you wish to have the sample in your Assets folder, import the **Basic Example** from the **Samples** section in the Package Manager.
 5. Click the **Record** button in the scene to start recording.
 6. Click the **Stop** button to end the recording.
