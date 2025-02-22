@@ -13,11 +13,11 @@
 !Packages/com.capgemini.voicerecorder/Samples~/BasicExample/
 !Packages/com.capgemini.voicerecorder/Samples~/BasicExample/**
 
-Packages/com.capgemini.voicerecording/Runtime/.vs/
+Packages/com.capgemini.voicerecorder/Runtime/.vs/
 
 !*.meta
-!*.asmdef
-!*.asmref
+!**/*.asmdef
+!**/*.asmref
 
 !*.cs
 !*.shader
