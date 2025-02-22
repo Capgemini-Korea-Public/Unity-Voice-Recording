@@ -6,6 +6,7 @@
 !Runtime/
 
 !Samples~/
+!Samples~/**
 
 !*.meta
 !*.asmdef
