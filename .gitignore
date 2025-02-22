@@ -5,6 +5,8 @@
 
 !Packages/com.capgemini.voicerecorder/Runtime/
 !Packages/com.capgemini.voicerecorder/Runtime/**
+!Packages/com.capgemini.voicerecorder/Runtime/Script/
+!Packages/com.capgemini.voicerecorder/Runtime/Script/**
 
 !Packages/com.capgemini.voicerecorder/Samples~/
 !Packages/com.capgemini.voicerecorder/Samples~/**
