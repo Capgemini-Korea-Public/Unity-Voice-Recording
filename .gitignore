@@ -17,6 +17,8 @@
 !*.cs
 !*.shader
 !*.cginc
+!*.unity
+!*.prefab
 # etc.
 
 !README.md
