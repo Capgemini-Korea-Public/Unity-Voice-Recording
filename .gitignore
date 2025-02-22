@@ -11,6 +11,8 @@
 !Packages/com.capgemini.voicerecorder/Samples~/BasicExample/
 !Packages/com.capgemini.voicerecorder/Samples~/BasicExample/**
 
+Packages/com.capgemini.voicerecording/Runtime/.vs/
+
 !*.meta
 !*.asmdef
 !*.asmref
