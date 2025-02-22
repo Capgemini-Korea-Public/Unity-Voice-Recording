@@ -5,10 +5,10 @@
 
 !Runtime/
 
-!Samples~/
-!Samples~/**
-!Samples~/BasicExample/
-!Samples~/BasicExample/**
+!Packages/com.capgemini.voicerecorder/Samples~/
+!Packages/com.capgemini.voicerecorder/Samples~/**
+!Packages/com.capgemini.voicerecorder/Samples~/BasicExample/
+!Packages/com.capgemini.voicerecorder/Samples~/BasicExample/**
 
 !*.meta
 !*.asmdef
