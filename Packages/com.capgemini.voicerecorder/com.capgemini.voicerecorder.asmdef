@@ -1,0 +1,15 @@
+{
+  "name": "com.capgemini.voicerecorder",
+  "references": [],
+  "optionalUnityReferences": [
+    "TextMeshPro",
+    "UGUI"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": []
+}
