@@ -1,7 +1,7 @@
 {
   "name": "com.companyname.voicerecording",
   "displayName": "Voice Recording Module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "unity": "2021.3",
   "description": "Module providing voice recording, noise reduction, and STT integration.",
   "keywords": [
