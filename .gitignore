@@ -3,7 +3,8 @@
 !package.json
 !Packages/manifest.json
 
-!Runtime/
+!Packages/com.capgemini.voicerecorder/Runtime/
+!Packages/com.capgemini.voicerecorder/Runtime/**
 
 !Packages/com.capgemini.voicerecorder/Samples~/
 !Packages/com.capgemini.voicerecorder/Samples~/**
